@@ -10,5 +10,6 @@ MY_BASE_DIR="$(pwd -P)"
 
 
 cd "${MY_BASE_DIR}"
+ls -altrh
 docker-compose build
 docker-compose up -d
