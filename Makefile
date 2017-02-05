@@ -9,6 +9,7 @@ lab: $(BOX_FILE)
 
 $(BOX_FILE):
 	cp -r ./lab/* ./$(GIT_SUBPROJECT)/customize/
+	cp ./lab/vagrantfile-box.tpl ./$(GIT_SUBPROJECT)/
 	cd $(GIT_SUBPROJECT) && make all
 
 clean-lab:
