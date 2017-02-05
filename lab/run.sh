@@ -9,6 +9,6 @@ set -eux
 MY_BASE_DIR="$(pwd -P)"
 
 
-cd "${MY_BASE_DIR}/docker"
+cd "${MY_BASE_DIR}"
 docker-compose build
 docker-compose up -d

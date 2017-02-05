@@ -8,7 +8,7 @@ all: clean-lab lab
 lab: $(BOX_FILE)
 
 $(BOX_FILE):
-	cp -r ./lab ./$(GIT_SUBPROJECT)/customize
+	cp -r ./lab/* ./$(GIT_SUBPROJECT)/customize/
 	cd $(GIT_SUBPROJECT) && make all
 
 clean-lab:
