@@ -2,6 +2,16 @@ version: '2'
 
 services:
 
+    front:
+        build: ./front/
+        restart: unless-stopped
+        depends_on:
+        - gitserver
+        - jenkins
+        - devbox
+        ports:
+        - "10000:10000"
+
     gitserver:
         build:
             context: ./gitserver/
@@ -9,15 +19,16 @@ services:
             - FIRST_REPO_NAME=gameoflife
             - SOURCE_REPO_TO_MIRROR=https://github.com/dduportal/gameoflife
         restart: unless-stopped
-        ports:
-        - "3000:3000"
+        extra_hosts:
+        - "${EXTERNAL_DOMAIN}:172.17.0.1" # For webhooks
+        environment:
+        - EXTERNAL_URL=http://${EXTERNAL_DOMAIN}:10000/gitserver
 
     jenkins:
         build: ./jenkins/
         restart: unless-stopped
-        ports:
-            - "8080:8080"
-            - "50000:50000"
+        extra_hosts:
+        - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:
         - JENKINS_OPTS=--prefix=/jenkins
         - JAVA_OPTS=-Djenkins.install.runSetupWizard=false -Xms1024m -Xmx1024m -XX:+UseG1GC
@@ -25,20 +36,24 @@ services:
     maven-agent:
         image: dduportal/jenkins-ssh-agent:alpine
         restart: unless-stopped
+        extra_hosts:
+        - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:
         - JENKINS_SLAVE_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
 
     docker-agent:
         image: dduportal/jenkins-ssh-agent:alpine
         restart: unless-stopped
+        extra_hosts:
+        - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:
         - JENKINS_SLAVE_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
 
     devbox:
         image: tsl0922/ttyd
         restart: unless-stopped
-        ports:
-            - "7681:7681"
+        extra_hosts:
+        - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
 
     docker-service:
       image: verb/socat:alpine
