@@ -1,5 +1,9 @@
 version: '2'
 
+volumes:
+    maven-cache:
+        external: true
+
 services:
 
     front:
@@ -26,24 +30,29 @@ services:
 
     jenkins:
         build: ./jenkins/
+        # image: jenkins:2.32.2-alpine
         restart: unless-stopped
+        volumes:
+        - maven-cache:/var/jenkins_home/.m2/repository
         extra_hosts:
         - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:
         - JENKINS_OPTS=--prefix=/jenkins
-        - JAVA_OPTS=-Djenkins.install.runSetupWizard=false -Xms1024m -Xmx1024m -XX:+UseG1GC
 
     maven-agent:
         image: dduportal/jenkins-ssh-agent:alpine
         restart: unless-stopped
+        volumes:
+        - maven-cache:/home/jenkins/.m2/repository
         extra_hosts:
         - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:
         - JENKINS_SLAVE_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
 
     docker-agent:
-        image: dduportal/jenkins-ssh-agent:alpine
+        build: ./docker-agent/
         restart: unless-stopped
+        privileged: true
         extra_hosts:
         - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
         environment:

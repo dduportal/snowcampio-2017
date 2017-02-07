@@ -34,11 +34,14 @@ class: center, middle, inverse
 # Agenda:
 
 1. Jenkins 2, quoi de neuf ?
-2. Un petit tour du propriétaire
-3. Vous avez dit Docker ?
-4. Un petit pipeline pour commencer
+2. Démo: Un petit tour du propriétaire
+3. Débutons avec les pipelines
+4. Vous avez dit Docker ?
 5. Jenkins et Docker ensemble
-
+6. Futur: BlueOcean et Declarative Pipelines
+---
+class: center, middle, inverse
+# DISCLAIMER
 
 ---
 class: center, middle, inverse
@@ -189,10 +192,25 @@ class: center, middle, inverse
 ## Pourquoi Jenkins 2 ?
 ## Objectifs
 ## Assistant
-## Pipeline
+## Pipeline-as-Code
 ]
 .right-column[
-# Pipeline
+# Pipeline-as-Code
+
+* Le dépôt code comme seul source de vérité
+  - Fichier _Jenkinsfile_ avec le code source
+  - C'est le dévelopeur qui spécifie comment construire son application
+
+* Un monde de DevOps: Jenkins ne devient pas "openbar"
+  - Pensez à vos admins !
+
+* Type de jobs dédiés:
+  - Pipeline
+  - Multibranch
+  - Organisations (Github / BitBucket)
+
+* "Citoyen de 1ère classe": le futur de Jenkins est centré sur les Pipelines
+
 ]
 ---
 .left-column[
@@ -368,20 +386,32 @@ class: center, middle, inverse
 ---
 class: center, middle, inverse
 
-# Un petit tour du propriétaire
+# Démo: Un petit tour du propriétaire
 ---
 .left-column[
-# Un petit tour du propriétaire
+# Tour du propriétaire
 ## Game Of Life
 ]
 .right-column[
 
 # Game Of Life
 
+* Code original: <https://github.com/wakaleo/game-of-life>
+
+* Implémentation web du ["Jeu de la Vie de J. H. Conway"](https://fr.wikipedia.org/wiki/Jeu_de_la_vie)
+
+* Jeu "zéro joueur"
+  - On défini l'état initial de la grille de cellule
+  - Puis on lance et on observe
+
+* Règles:
+  - Une cellule morte possédant exactement trois voisines vivantes devient vivante.
+  - Une cellule vivante possédant deux ou trois voisines vivantes le reste, sinon elle meurt.
+
 ]
 ---
 .left-column[
-# Un petit tour du propriétaire
+# Tour du propriétaire
 ## Game Of Life
 ## Maven & Java
 ]
@@ -389,10 +419,32 @@ class: center, middle, inverse
 
 # Maven & Java
 
+* Application écrite en Java
+  - Compatible JDK 7 et 8
+
+* Cycle de vie de l'application géré par [Maven](https://maven.apache.org/)
+  - Description du projet avec un fichier `pom.xml`
+  - Gestion des dépendances
+  - Stockage dans le dépôt `${HOME}/.m2/repository`
+  - Ligne de commande pour exécuter des "goals"
+  - Orienté convention: dossier `target`
+
+* Avec un JDK 8 et Maven 3.3.9 dans votre PATH:
+  - Nettoyer le projet: `mvn clean`
+  - Compiler le projet: `mvn compile`
+  - Tests unitaires: `mvn test`
+  - Tests d'intégration: `mvn verify`
+  - Empaqueter l'application: `mvn package`
+  - Installer les paquets dans le dépôt local: `mvn install`
+
+.center[
+## Action Time
+]
+
 ]
 ---
 .left-column[
-# Un petit tour du propriétaire
+# Tour du propriétaire
 ## Game Of Life
 ## Maven & Java
 ## Run It
@@ -401,33 +453,264 @@ class: center, middle, inverse
 
 # Run It
 
+* Sous-projet `gameoflife-web`
+
+* Artefact généré: un fichier `.war`
+
+* Nécessite un serveur d'application (Tomcat, JBoss, Jetty)
+
+* Lancement avec Maven :
+```
+mvn -pl gameoflife-web jetty:run
+```
+  - Accessible sur http://localhost:9090
+
+.center[
+## Action Time
+]
+
+]
+---
+.left-column[
+# Tour du propriétaire
+## Game Of Life
+## Maven & Java
+## Run It
+## Jenkins It
+]
+.right-column[
+
+# Jenkins It
+
+* Jenkins préconfiguré: <https://github.com/dduportal/snowcamp-io-2017>
+
+* Jenkins agent:
+  - Rien ne dois tourner sur le master (sécurité)
+  - Scaler facilement la fonction "build"
+  - Builder sur des cibles spécifiques
+
+* Jenkins exécuteur:
+  - Emplacement "virtuel" atomique pour une tâche
+  - Est fourni par les agents et le master
+  - Règle de _départ_ : ~1 exécuteur par CPU
+
+.center[
+## Action Time
+]
+
 ]
 ---
 class: center, middle, inverse
 
-# Vous avez dit Docker ?
+# Débutons avec les pipelines
 ---
 .left-column[
-# Vous avez dit Docker ?
-##
+# Débutons avec les pipelines
 ]
 .right-column[
 
-#
+# Avantages par rapport au Freestyle
+
+* "Configuration as code"
+  - Historisation
+  - Gestion des conflits
+* Gestion du parallélisme simple
+* Syntaxe Dynamique (plugins)
 
 ]
 ---
 class: center, middle, inverse
 
-# Un petit pipeline pour commencer
+# Docker 101
+## Vous avez dit Docker ?
 ---
 .left-column[
-# Un petit pipeline pour commencer
-##
+# Docker: 101
+## Pourquoi Docker ?
+
 ]
 .right-column[
 
-#
+# Pourquoi Docker ?
+
+Quel est le problème que nous essayons de résoudre ?
+
+.center[![Docker Challenge](./images/docker-the-challenge.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+
+]
+.right-column[
+
+# "Matrix from Hell"
+
+Problème de temps **exponentiel**
+
+.center[![Matrix-Hell](./images/the-matrix-from-hell.png)]
+
+]
+---
+
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+
+]
+.right-column[
+
+# Déjà vu ?
+
+L'IT n'est pas la seule industrie à résoudre des problèmes...
+
+.center[![Transport Analogy](./images/also-a-matrix-from-hell.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+
+]
+.right-column[
+
+# Solution: Le container intermodal
+.center[![Container](./images/blue-shipping-container.png)]
+.center["Separation of Concerns"]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+]
+.right-column[
+
+# Comment ça marche ?
+
+.center["Virtualisation **Légère**"]
+
+.center[![Container vs VMs](./images/container_vs_vm.jpg)]
+
+]
+---
+
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+]
+.right-column[
+
+# Comment ça marche ?
+
+* Linux Kernel requis (ou presque... Windows...)
+* Linux containers: "super" chroot
+  - "Namespacing": isolation (users, réseau, PIDs ...)
+  - "Control Groups": gestion et contrôle (CPU, mem ...)
+* Système de fichier de type "Union File System"
+* Process **PID 1** et ses enfants _dans_ le container
+
+.center[![Docker Container](./images/docker-image-creation-01-little.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+## Docker workflow
+]
+.right-column[
+
+# Docker workflow
+
+Workflow Docker basique:
+
+.center[![Docker Workflow](./images/basics-of-docker-system.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+## Docker workflow
+## Docker Inc.
+]
+.right-column[
+
+# Docker Inc.
+
+* Fondé à Paris en 2008 par Solomon Hykes
+* Migre à San Fransisco en 2009
+* 2013: Open-source le projet Docker
+* 2014: dotCloud devient Docker
+* 2016: 1 milliard de levée de fond
+
+# Docker Project
+
+* Originellement écrit en Python au sein de dotCloud
+* Ré-écrit en **Golang** et _ouvert_ en 2013 après une "PyCon"
+* Open Source - [Apache licence](https://github.com/docker/docker/blob/master/LICENSE)
+* Disponible sur Github: https://github.com/docker/docker
+* ~22 K commits, +1400 contributeurs
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+## Docker workflow
+## Docker Inc.
+## Résumé
+]
+.right-column[
+
+# Résumé
+
+_Objectif de Docker :_
+
+.center[![Docker Goal](./images/docker-build-ship-run.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+## Docker workflow
+## Docker Inc.
+## Résumé
+]
+.right-column[
+
+# Container are NOT VMs
+
+"Separation of concerns": 1 "tâche" par containeur
+
+.center[![Container are NOT VMs](./images/vm-and-container.png)]
+
+]
+---
+.left-column[
+# Docker: 101
+## Pourquoi Docker ?
+## Comment ça marche ?
+## Docker workflow
+## Docker Inc.
+## Résumé
+]
+.right-column[
+
+# VM et containeurs non exclusifs mutuellement
+
+.center[![Container are NOT VMs](./images/cont-vm-not-excl.png)]
 
 ]
 ---
@@ -437,13 +720,22 @@ class: center, middle, inverse
 ---
 .left-column[
 # Jenkins et Docker ensemble
-##
 ]
 .right-column[
 
-#
+# Cas d'usages
+
+* Docker comme outil de build
+* Docker comme environnement de build
+* Docker pour les agents
+* Docker pour le master
 
 ]
+---
+class: center, middle, inverse
+
+# Futur: BlueOcean et Declarative Pipelines
+## Il est frais mon Pipeline !
 ---
 class: center, middle, inverse
 # Merci !
