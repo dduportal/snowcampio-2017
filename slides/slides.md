@@ -39,6 +39,10 @@ class: center, middle, inverse
 4. Vous avez dit Docker ?
 5. Jenkins et Docker ensemble
 6. Futur: BlueOcean et Declarative Pipelines
+
+
+Code et Lab disponibles ici: https://github.com/dduportal/snowcampio-2017
+
 ---
 class: center, middle, inverse
 # DISCLAIMER
@@ -438,7 +442,7 @@ class: center, middle, inverse
   - Installer les paquets dans le dépôt local: `mvn install`
 
 .center[
-## Action Time
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#démo-application-gameoflife---maven--java)
 ]
 
 ]
@@ -466,7 +470,7 @@ mvn -pl gameoflife-web jetty:run
   - Accessible sur http://localhost:9090
 
 .center[
-## Action Time
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#démo-application-gameoflife---maven--java)
 ]
 
 ]
@@ -482,7 +486,7 @@ mvn -pl gameoflife-web jetty:run
 
 # Jenkins It
 
-* Jenkins préconfiguré: <https://github.com/dduportal/snowcamp-io-2017>
+* Jenkins préconfiguré: <https://github.com/dduportal/snowcampio-2017>
 
 * Jenkins agent:
   - Rien ne dois tourner sur le master (sécurité)
@@ -495,7 +499,7 @@ mvn -pl gameoflife-web jetty:run
   - Règle de _départ_ : ~1 exécuteur par CPU
 
 .center[
-## Action Time
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#démarrer-avec-jenkins)
 ]
 
 ]
@@ -503,9 +507,11 @@ mvn -pl gameoflife-web jetty:run
 class: center, middle, inverse
 
 # Débutons avec les pipelines
+
 ---
 .left-column[
 # Débutons avec les pipelines
+## Avantages
 ]
 .right-column[
 
@@ -517,7 +523,58 @@ class: center, middle, inverse
 * Gestion du parallélisme simple
 * Syntaxe Dynamique (plugins)
 
+* Documentation et tutoriels: https://jenkins.io/doc/book/pipeline/
+
 ]
+
+---
+.left-column[
+# Débutons avec les pipelines
+## Avantages
+## Pipeline "simple"
+]
+.right-column[
+
+# Pipeline "simple"
+
+
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#pipeline-scripted-simple)
+
+]
+
+---
+.left-column[
+# Débutons avec les pipelines
+## Avantages
+## Pipeline "simple"
+## Pipeline et plugins
+]
+.right-column[
+
+# Pipeline et plugins
+
+
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#amélioration-du-pipeline-simplification-des-commandes-et-utilisation-de-plugin-pipeline-isé)
+
+]
+
+---
+.left-column[
+# Débutons avec les pipelines
+## Avantages
+## Pipeline "simple"
+## Pipeline et plugins
+## Multibranch Pipeline
+]
+.right-column[
+
+# Multibranch Pipeline
+
+
+## [Action Time - click me](https://github.com/dduportal/snowcampio-2017#multibranch-pipeline--workflow-complexe)
+
+]
+
 ---
 class: center, middle, inverse
 
@@ -736,6 +793,10 @@ class: center, middle, inverse
 
 # Futur: BlueOcean et Declarative Pipelines
 ## Il est frais mon Pipeline !
+
+* https://jenkins.io/projects/blueocean/
+* https://jenkins.io/doc/pipeline/tour/hello-world/
+
 ---
 class: center, middle, inverse
 # Merci !

@@ -1,4 +1,4 @@
-FROM docker:1.13.0-dind
+FROM docker:1.13.1-dind
 
 ARG user=jenkins
 ARG group=jenkins

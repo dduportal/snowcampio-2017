@@ -52,6 +52,8 @@ services:
     devbox:
         build: ./devbox/
         restart: unless-stopped
+        ports:
+        - "9090:9090"
         extra_hosts:
         - "${EXTERNAL_DOMAIN}:172.17.0.1" # For getting git repo
 
